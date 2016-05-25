@@ -1,0 +1,428 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<link rel="shortcut icon" href="images/logo1.ico" type="image/x-icon" />
+<title>Guitar</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!--登录js-->
+<script type="text/javascript">
+	$(document).ready(
+					function() {	
+						
+		$.getJSON("IndexQuery",function(jsonData) {
+											var uname="";
+											var denglu="";
+											var chaolianjie="";
+											var tuichu="";
+											for (var i = 0; i < jsonData.length; i++) {
+												//alert("ahdfkahdukhna");
+												uname=jsonData[i].username;
+												denglu=jsonData[i].denglu;
+												chaolianjie=jsonData[i].chaolianjie;
+												tuichu=jsonData[i].tuichu;
+											}
+											
+											$("#zhuce").html(uname);
+											$("#denglu").text(denglu);
+											$("#chaolianjie").attr("href",""+chaolianjie+"");
+											$("#tuichu").attr("href",""+tuichu+"");
+											
+			});
+		});
+</script>
+
+<script type="text/javascript">
+window.onload=function(){
+	   var url = location.href;
+	　　//获取pid的参数值
+	　　var es=/bookname=/;
+	　　es.exec(url);
+	　　var bookname=RegExp.rightContext;
+	　　var aurl = "&bookname="+bookname;
+	    $("#key").val(decodeURI(bookname));	
+		$("#ss").ready(function(){
+  		$.get("Search", { bookname:decodeURI(bookname) }, function(n){
+				$("table tr:gt(0)").remove();//除了第一行都删了。
+				var html = "";
+				var  major="";
+				for (var i=0; i < n.rows.length; i++) {
+					var r = n.rows[i];
+					html += "<tr onMouseOver=\"this.style.backgroundColor='#c9c9c9';\" onMouseOut=\"this.style.backgroundColor='#d4e3e5';\"><td><a href=\"single.html?major="+r.major+"&bookid="+r.bookid+"\">" + r.bookname + "</a></td>";
+					html += "<td>" + r.store + "</td>";
+					html += "<td>" + r.price + "</td>";
+					html += "<td>" + r.press + "</td>";
+					html += "<td>" + r.userid + "</td>";
+					html += "<td>" + r.grade + "</td>";
+					html += "<td>" + r.peisong + "</td></tr>";			
+				}
+				$("table").append(html);
+			});	
+		});	
+}
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){		
+		$("#ss").click(function(){
+			$.get("Search", { bookname: $("#key").val() }, function(n){
+				$("table tr:gt(0)").remove();//除了第一行都删了。				
+				var html = "";
+				for (var i=0; i < n.rows.length; i++) {
+					var r = n.rows[i];
+					html += "<tr onMouseOver=\"this.style.backgroundColor='#c9c9c9';\" onMouseOut=\"this.style.backgroundColor='#d4e3e5';\"><td><a href=\"single.html?major="+r.major+"&bookid="+r.bookid+"\">" + r.bookname + "</a></td>";
+					html += "<td>" + r.store + "</td>";
+					html += "<td>" + r.price + "</td>";
+					html += "<td>" + r.press + "</td>";
+					html += "<td>" + r.userid + "</td>";
+					html += "<td>" + r.grade + "</td>";
+					html += "<td>" + r.peisong + "</td></tr>";
+				}
+				$("table").append(html);
+			});			
+		});		
+	});
+</script>
+<script type="text/javascript">
+
+
+
+var grade = "";
+var psfs = "";
+var jgqj = "";
+
+
+function filter() {
+	$.get("Search", { keyword: grade, psfs: psfs, jgqj: jgqj }, function(n){
+		$("table tr:gt(0)").remove();//除了第一行都删了。
+		var html = "";
+		for (var i=0; i < n.rows.length; i++) {
+			var r = n.rows[i];
+			html += "<tr onMouseOver=\"this.style.backgroundColor='#c9c9c9';\" onMouseOut=\"this.style.backgroundColor='#d4e3e5';\"><td><a href=\"single.html?major="+r.major+"&bookid="+r.bookid+"\">" + r.bookname + "</a></td>";
+			html += "<td>" + r.store + "</td>";
+			html += "<td>" + r.price + "</td>";
+			html += "<td>" + r.press + "</td>";
+			html += "<td>" + r.userid + "</td>";
+			html += "<td>" + r.grade + "</td>";
+			html += "<td>" + r.peisong + "</td></tr>";
+		}
+		$("table").append(html);
+	});
+}
+
+
+
+	$(document).ready(function(){
+		
+		$("#filter dl dd div").click(function(){
+			var div = $(this);
+			switch(div.parent().parent().attr("id")) {
+				case "dlgc":
+					grade = div.text();
+					break;
+				case "dlpsfs":
+					psfs = div.text();
+					break;
+				case "dljgqj":
+					jgqj = div.text();
+					break;	
+				default:
+					break;
+			}
+			
+			filter();
+		});
+		
+	});
+</script>
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+<link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
+<link href="css/style.css" rel='stylesheet' type='text/css' />
+<link href="css/search.css" rel='stylesheet' type='text/css' />
+<style type="text/css">
+table.hovertable {
+	font-family: verdana, arial, sans-serif;
+	font-size: 11px;
+	color: #333333;
+	border-width: 1px;
+	border-color: #999999;
+	border-collapse: collapse;
+}
+table.hovertable th {
+	background-color: #c3dde0;
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #a9c6c9;
+}
+table.hovertable tr {
+	background-color: #d4e3e5;
+}
+table.hovertable td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #a9c6c9;
+}
+</style>
+</head>
+<body>
+  <script type="text/javascript">
+var abc = [];
+
+$(function(){
+	//选中filter下的所有a标签，为其添加hover方法，该方法有两个参数，分别是鼠标移上和移开所执行的函数。
+	$("#filter a").hover(function(){
+		$(this).addClass("seling");
+	},function(){
+		$(this).removeClass("seling");
+	});
+	//选中filter下所有的dt标签，并且为dt标签后面的第一个dd标签下的a标签添加样式seled。(感叹jquery的强大)
+	$("#filter dt+dd a").attr("class", "seled"); /*注意：这儿应该是设置(attr)样式，而不是添加样式(addClass)，
+	不然后面通过$("#filter a[class='seled']")访问不到class样式为seled的a标签。*/       
+
+	//为filter下的所有a标签添加单击事件
+	$("#filter a").click(function(){
+		$(this).parents("dl").children("dd").each(function(){
+			$(this).children("div").children("a").removeClass("seled");
+		});
+	
+		$(this).attr("class", "seled");
+
+		var p = $(this).parents("dl").attr("id");
+
+		var needhide = $(this);
+		needhide.parentsUntil("dl").parent().hide();
+		abc.push(needhide);
+		var val = $(this).html().replace(/ /g, "kongge");
+		var condition = '<a class="inbtn pzbtn" onclick=deleteC("'+val+'","' + p + '") rel="'+$(this).html()+'"><span onclick=deleteC("'+val+'", "' + p + '")>'+$(this).html()+'</span></a>';
+		$("#condition").append(condition);
+		// alert(RetSelecteds()); //返回选中结果
+	});
+// alert(RetSelecteds()); //返回选中结果
+});
+
+function deleteC(v, p){
+	$("#filter  a").removeClass("seled");
+	$("#filter dt+dd a").attr("class", "seled");
+	
+	var val = v.replace(/kongge/g, " ");
+	$("#condition").find("a[rel='"+val+"']").remove();
+	
+	//$("#filter dl dt dd ").attr("class", "seled");
+	for(var i = 0; i<abc.length; i++){
+		if(abc[i].html() == val){
+			abc[i].parentsUntil("dl").parent().show();
+			abc.splice(i, 1);
+			i--;
+		}else{
+			abc[i].parentsUntil("dl").parent().hide();
+		}
+	}
+	
+	switch(p) {
+		case "dlgc":
+			grade = "";
+			break;
+		case "dlpsfs":
+			psfs = "";
+			break;
+		case "dljgqj":
+			jgqj = "";
+			break;	
+		default:
+			break;
+	}
+	
+	filter();
+	
+}
+
+
+
+function RetSelecteds(){
+	var result = "";
+	$("#filter a[class='seled']").each(function(){
+		result += $(this).html()+"\n";
+	});
+	return result;
+}
+</script>
+<div class="header">
+  <div class="header_top">
+    <div class="container">
+      <div class="logo" style="font-size:24px">GUITAR1.0</div>
+      <div class="clearfix"> </div>
+    </div>
+  </div>
+  
+  <div class="h_menu4"><!-- start h_menu4 -->
+    <div class="container"> <a class="toggleMenu" href="#">菜单</a>
+      <ul class="nav">
+        <li><a href="index.html" data-hover="Home">&emsp;&emsp;&emsp;商品搜索&emsp;&emsp;&emsp;</a></li>
+        
+        <!--
+					<li><a href="register.html" data-hover="Company Registration">Company Registration</a></li>
+					<li><a href="wishlist.html" data-hover="Wish List">Wish List</a></li>
+					-->
+      </ul>
+      <script type="text/javascript" src="js/nav.js"></script> 
+    </div>
+    <!-- end h_menu4 --> 
+  </div>
+</div>
+<div class="column_center">
+  <div class="container">
+    <div class="search">
+      <div class="row">
+        <div class="col-lg-7 col-xs-2"></div>
+        <div class="stay_right col-lg-5 col-xs-10">
+          <label style="text-align:right;vertical-align:middle;font-size:15px;color:#DF1F26"></label>
+          <input type="text" id="key" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}">
+          <input type="submit" id="ss" value="">
+        </div>
+      </div>
+      <div class="clearfix"> </div>
+    </div>
+    <div class="clearfix"> </div>
+  </div>
+</div>
+<div class="main">
+  <div class="content_top">
+    <div class="container">
+      <div class="col-md-12 ">
+        <div class="sortbox">
+          <div class="siftbox clearfix"> <span class="label"><font color="#000000">已选条件:</font></span>
+            <div id="condition"></div>
+          </div>
+          <div id="filter" >
+            <dl id="guitarbrands" class="clearfix" style="margin-buttom:0">
+              <dt >品牌：</dt>
+              <dd>
+                <div><a>全部</a></div>
+              </dd>
+              <dd>
+                <div><a>Martin</a></div>
+              </dd>
+              <dd>
+                <div><a>Taylor</a></div>
+              </dd>
+              <dd>
+                <div><a>Gibson</a></div>
+              </dd>
+              <dd>
+                <div><a>Fletcher</a></div>
+              </dd>
+               <dd>
+                <div><a>Lakewood</a></div>
+              </dd>
+                <dd>
+                <div><a>其它</a></div>
+              </dd>
+            </dl>
+            <dl id="guitartypes" class="clearfix" style="margin-buttom:0">
+              <dt>类型：</dt>
+              <dd>
+                <div><a>全部</a></div>
+              </dd>
+              <dd>
+                <div><a>民谣吉他</a></div>
+              </dd>
+              <dd>
+                <div><a>古典吉他</a></div>
+              </dd>
+              <dd>
+                <div><a>电吉他</a></div>
+              </dd>
+              <dd>
+                <div><a>电贝斯</a></div>
+              </dd>
+              <dd>
+                <div><a>爵士吉他</a></div>
+              </dd>
+              <dd>
+                <div><a>佛拉门哥吉他</a></div>
+              </dd>
+              <dd>
+                <div><a>夏威夷吉他</a></div>
+              </dd>
+                <dd>
+                <div><a>其它</a></div>
+              </dd>
+            </dl>
+            <dl id="guitartopwoods" class="clearfix" style="margin-buttom:0">
+              <dt>面板材质：</dt>
+              <dd>
+                <div><a>全部</a></div>
+              </dd>
+              <dd>
+                <div><a>云杉</a></div>
+              </dd>
+              <dd>
+                <div><a> 雪松</a></div>
+              </dd>
+              <dd>
+                <div><a> 桃花芯木</a></div>
+              </dd>
+               <dd>
+                <div><a>其它</a></div>
+              </dd>
+            </dl>
+            <dl id="guitarbackwoods" class="clearfix" style="margin-buttom:0">
+              <dt>背板材质：</dt>
+              <dd>
+                <div><a>全部</a></div>
+              </dd>
+              <dd>
+                <div><a>玫瑰木</a></div>
+              </dd>
+              <dd>
+                <div><a>胡桃木</a></div>
+              </dd>
+              <dd>
+                <div><a>红木</a></div>
+              </dd>
+               <dd>
+                <div><a>其它</a></div>
+              </dd>
+            </dl>
+             <dl id="guitarprice" class="clearfix" style="margin-buttom:0">
+              <dt>价格：</dt>
+              <dd>
+                <div><a>全部</a></div>
+              </dd>
+              <dd>
+                <div><a>500以下</a></div>
+              </dd>
+              <dd>
+                <div><a>500-999</a></div>
+              </dd>
+              <dd>
+                <div><a>1000-1499</a></div>
+              </dd>
+                <dd>
+                <div><a>其它</a></div>
+              </dd>
+            </dl>
+            
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table hovertable" width="80%" align="center" style="margin-top:20px">
+            <tr>
+              <th align="center">商品编号</th>
+              <th align="center">品牌</th>
+              <th align="center">类型</th>
+              <th align="center">面板材质</th>
+              <th align="center">背板材质</th>
+              <th align="center">价格</th>
+                <th align="center">操作</th>
+            </tr>
+          </table>
+        </div> 
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
